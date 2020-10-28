@@ -8,11 +8,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'hangman';
+  title = 'hangman';  
 
-  test:Observable<Array<{answer:string}>>; 
-  
-  constructor(private gameService: GameService){
-    this.test = this.gameService.getAnswerList();    
-  }
+  constructor(){}
 }

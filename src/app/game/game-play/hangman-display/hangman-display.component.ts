@@ -12,6 +12,9 @@ export class HangmanDisplayComponent {
 
   constructor() { }
 
+  /**
+   * Set icon according to error level
+   */
   getIcon(){
     switch(this.errorLevel){
       case 0: {

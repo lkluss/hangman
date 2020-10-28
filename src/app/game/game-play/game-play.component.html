@@ -9,17 +9,28 @@
 <div class="row">
   <div class="col-12 col-md-5 order-md-2">
     <app-hangman-display [errorLevel]="errors"></app-hangman-display>
-
+  </div>
+  <div class="col-12 col-md-7 d-flex flex-column justify-content-center align-items-center my-4" *ngIf="gamePaused">
+    <h5>You have won this stage!</h5>
+    <button class="btn btn-outline-dark" (click)="startStage()">NEXT STAGE</button>
   </div>
   <div class="col-12 col-md-7 order-md-1">
-    <app-letter-selection [word]="word" [spelledWord]="spelledWord"></app-letter-selection>
+    <app-letter-selection [spelledWord]="spelledWord" (noHits)="onNoHit()" (stageWon)="stageWon()"
+      [gamePaused]="gamePaused">
+    </app-letter-selection>
   </div>
 </div>
-<div class="row pt-4" #debug>
+<div class="row pt-4" *ngIf="true">
+  <div class="col-12">
+    Word: {{word}}, array length: {{ words.length }}
+  </div>
+  <div class="col-12">
+    <span *ngFor="let item of words">{{item.answer}} </span>
+  </div>
   <div class="col-12">
     <button class="btn btn-primary mx-3" (click)="errors = errors + 1">+1</button>
     <button class="btn btn-primary mx-3" (click)="errors = errors - 1">-1</button>
     <button class="btn btn-primary mx-3" (click)="selectWord()">Select word</button>
-    <button class="btn btn-primary mx-3" [disabled]="true">Disabled</button>
+    <button class="btn btn-primary mx-3" (click)="gamePaused = !gamePaused">Pause</button>
   </div>
 </div>

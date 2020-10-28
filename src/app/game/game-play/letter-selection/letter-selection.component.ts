@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { environment } from './../../../../environments/environment.prod';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-letter-selection',
@@ -6,10 +7,14 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./letter-selection.component.scss']
 })
 export class LetterSelectionComponent implements OnInit {
-
-  @Input() word: string = "";
-  @Input() spelledWord:[];
-
+  // Listo of letters to display
+  @Input() spelledWord:[{letter: string, detected: boolean}];
+  // game paused flag
+  @Input() gamePaused: boolean;
+  @Output() noHits:EventEmitter<any> = new EventEmitter();
+  @Output() stageWon: EventEmitter<any> = new EventEmitter();
+  
+  // List of english letters
   letters = []; 
 
   constructor() {
@@ -19,39 +24,41 @@ export class LetterSelectionComponent implements OnInit {
     this.resetLetters();
   }
 
+/**
+ * Change selected letter visibility
+ * Chceck if letter was discovered or if was it a miss
+ * If a letter was found, chcekc if the stage was won
+ * @param e 
+ */
   onSelectLetter(e){
-    e.selected = !e.selected;
+    if(!this.gamePaused){
+      e.selected = !e.selected;
+      let hit = 0;
+      this.spelledWord.forEach(sp => {
+        if(sp.letter === e.letter){
+          hit++;
+          sp.detected = true;
+        }
+      });
+
+      let detected = this.spelledWord.filter(e => e.detected === true);
+
+      if(hit === 0) {
+        this.noHits.next(null);
+      }else if(detected.length == this.spelledWord.length){
+        this.stageWon.next(null);
+        this.resetLetters();
+      }    
+    }    
   }
 
+  /**
+   * Reset letters so they can be used again
+   */
   resetLetters(){
-    this.letters = [
-      {letter: 'a', selected: false } , 
-      {letter: 'b', selected: false } , 
-      {letter: 'c', selected: false } , 
-      {letter: 'd', selected: false } , 
-      {letter: 'e', selected: false } , 
-      {letter: 'f', selected: false } , 
-      {letter: 'g', selected: false } , 
-      {letter: 'h', selected: false } , 
-      {letter: 'i', selected: false } , 
-      {letter: 'j', selected: false } , 
-      {letter: 'k', selected: false } , 
-      {letter: 'l', selected: false } , 
-      {letter: 'm', selected: false } , 
-      {letter: 'n', selected: false } , 
-      {letter: 'o', selected: false } , 
-      {letter: 'p', selected: false } , 
-      {letter: 'q', selected: false } , 
-      {letter: 'r', selected: false } ,
-      {letter: 's', selected: false } , 
-      {letter: 't', selected: false } , 
-      {letter: 'u', selected: false } , 
-      {letter: 'v', selected: false } , 
-      {letter: 'w', selected: false } , 
-      {letter: 'x', selected: false } , 
-      {letter: 'y', selected: false } , 
-      {letter: 'z', selected: false } 
-  ];
+    this.letters = [];
+    for (var i = 0; i < environment.letters.length; i++) {
+      this.letters.push({letter: environment.letters.charAt(i), selected: false});
+    }     
   }
-
 }
