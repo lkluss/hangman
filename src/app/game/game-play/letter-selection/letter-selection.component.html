@@ -1,0 +1,13 @@
+<div class="row py-4">
+  <div class="col-12 d-flex justify-content-center align-items-center">
+    <div class="letter-box" *ngFor="let letter of spelledWord">
+      {{ !letter.diesabled ? letter.letter : " "}}
+    </div>
+  </div>
+</div>
+
+<div class="row d-flex justify-content-center align-items-center py-4">
+  <div class="col-auto  my-1" *ngFor="let element of letters" (click)="onSelectLetter(element)">
+    <button class="btn btn-dark letter-button" [disabled]="element.selected">{{element.letter}}</button>
+  </div>
+</div>

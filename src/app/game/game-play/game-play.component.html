@@ -1,0 +1,25 @@
+<div class="row justify-content-between">
+  <div class="col-6">
+    <h4>STAGE: {{stage}}</h4>
+  </div>
+  <div class="col-6">
+    <h4 class="float-right">TIME: {{display}}</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 col-md-5 order-md-2">
+    <app-hangman-display [errorLevel]="errors"></app-hangman-display>
+
+  </div>
+  <div class="col-12 col-md-7 order-md-1">
+    <app-letter-selection [word]="word" [spelledWord]="spelledWord"></app-letter-selection>
+  </div>
+</div>
+<div class="row pt-4" #debug>
+  <div class="col-12">
+    <button class="btn btn-primary mx-3" (click)="errors = errors + 1">+1</button>
+    <button class="btn btn-primary mx-3" (click)="errors = errors - 1">-1</button>
+    <button class="btn btn-primary mx-3" (click)="selectWord()">Select word</button>
+    <button class="btn btn-primary mx-3" [disabled]="true">Disabled</button>
+  </div>
+</div>
